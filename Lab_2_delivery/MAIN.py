@@ -81,11 +81,10 @@ while running:
     
     # LTA threshold
     LTA_left_threshold, LTA_right_threshold = sensor.generate_LTA_threshold(LTA_left_detection_processed, LTA_right_detection_processed)
-    # sensor.draw_LTA_threshold(config.SCREEN, LTA_left_threshold, LTA_right_threshold)
+    sensor.draw_LTA_threshold(config.SCREEN, LTA_left_threshold, LTA_right_threshold)
 
     
     # ------- Get status of the car --------------------------------
-    # status = sensor.get_car_bound_status(front_left, front_right, LTA_left_threshold, LTA_right_threshold)
     status = sensor.get_car_bound_status(front_left, front_right, LTA_left_threshold, LTA_right_threshold)
 
     if status in ["crossing_LTA_threshold_left", "crossing_LTA_threshold_right", "near_LTA_threshold_left", "near_LTA_threshold_right"]: # Trigger recovery if the car is near or outside the road
@@ -98,9 +97,9 @@ while running:
 
     # GUIDANCE INPUT
     lta_dphi = 0
-    # if recovering_flag:
-    #     lta_dphi = guidance.get_guidance_input(car_position_road, car_position_screen, theta, phi, dphi, LTA_left_detection_processed, LTA_right_detection_processed, status)
-    #     dphi += lta_dphi
+    if recovering_flag:
+        lta_dphi = guidance.get_guidance_input(car_position_road, car_position_screen, theta, phi, dphi, LTA_left_detection_processed, LTA_right_detection_processed, status)
+        dphi += lta_dphi
 
     # ROBOT
     car_position_road, car_position_screen, theta, phi = robot.update_kinematics(config.V, dphi, car_position_road, car_position_screen, theta, phi)
