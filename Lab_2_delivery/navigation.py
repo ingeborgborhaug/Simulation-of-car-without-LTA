@@ -81,8 +81,7 @@ def recovery_trajectory_spline(position, car_y_screen, theta_start, phi_start, d
     v_y = robot.get_velocity_y_direction(V, theta_start, phi_start)
     
     # Fit a cubic spline with increasing y values
-    # boundary = ((1, np.tan(optimal_thetas[-1])), (1, np.tan(theta_start))) # Curves
-    boundary = 'natural' # Straight line
+    boundary = 'natural' 
     spline = CubicSpline(y_sorted, x_sorted, bc_type= boundary)
 
     # # Generate evaluation points with reversed y-direction

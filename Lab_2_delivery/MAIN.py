@@ -77,11 +77,11 @@ while running:
     
     LTA_left_detection_noisy, LTA_right_detection_noisy = sensor.LTA_sensor(scrolled_road["middle"], scrolled_road["right"])
     LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes = sensor.LTA_processing(car_position_screen, LTA_left_detection_noisy, LTA_right_detection_noisy)
-    sensor.draw_LTA_detections(config.SCREEN, LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes)
+    # sensor.draw_LTA_detections(config.SCREEN, LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes)
     
     # LTA threshold
     LTA_left_threshold, LTA_right_threshold = sensor.generate_LTA_threshold(LTA_left_detection_processed, LTA_right_detection_processed)
-    sensor.draw_LTA_threshold(config.SCREEN, LTA_left_threshold, LTA_right_threshold)
+    # sensor.draw_LTA_threshold(config.SCREEN, LTA_left_threshold, LTA_right_threshold)
 
     
     # ------- Get status of the car --------------------------------
@@ -98,9 +98,9 @@ while running:
 
     # GUIDANCE INPUT
     lta_dphi = 0
-    if recovering_flag:
-        lta_dphi = guidance.get_guidance_input(car_position_road, car_position_screen, theta, phi, dphi, LTA_left_detection_processed, LTA_right_detection_processed, status)
-        dphi += lta_dphi
+    # if recovering_flag:
+    #     lta_dphi = guidance.get_guidance_input(car_position_road, car_position_screen, theta, phi, dphi, LTA_left_detection_processed, LTA_right_detection_processed, status)
+    #     dphi += lta_dphi
 
     # ROBOT
     car_position_road, car_position_screen, theta, phi = robot.update_kinematics(config.V, dphi, car_position_road, car_position_screen, theta, phi)
@@ -118,14 +118,14 @@ while running:
     time_series.append(elapsed_time)
 
     # TEXT IN WINDOW
-    text_optimal_steering = config.FONT.render(f"Phi from MPC after max and min: {lta_dphi:.2f}", True, config.WHITE)  # Top-left corner 
-    text_status = config.FONT.render(f"recovery_status: {status}", True, config.WHITE)
-    text_phi = config.FONT.render(f"phi: {phi:.2f}", True, config.WHITE)
-    text_dphi = config.FONT.render(f"dphi: {dphi:.2f}", True, config.WHITE)
-    config.SCREEN.blit(text_phi, (10, 10))           # Top-left corner
-    config.SCREEN.blit(text_dphi, (10, 50))          # Below x 
-    config.SCREEN.blit(text_status, (10, 100))   
-    config.SCREEN.blit(text_optimal_steering, (10, 150))
+    # text_optimal_steering = config.FONT.render(f"Phi from MPC after max and min: {lta_dphi:.2f}", True, config.WHITE)  # Top-left corner 
+    # text_status = config.FONT.render(f"Boundary status: {status}", True, config.WHITE)
+    # text_phi = config.FONT.render(f"phi: {phi:.2f}", True, config.WHITE)
+    # text_dphi = config.FONT.render(f"dphi: {dphi:.2f}", True, config.WHITE)
+    # config.SCREEN.blit(text_phi, (10, 10))           # Top-left corner
+    # config.SCREEN.blit(text_dphi, (10, 50))          # Below x 
+    # config.SCREEN.blit(text_status, (10, 100))   
+    # config.SCREEN.blit(text_optimal_steering, (10, 150))
     
 
     # -------------------------------------------------------------------

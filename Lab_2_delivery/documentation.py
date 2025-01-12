@@ -191,11 +191,11 @@ def plot_and_save_distances_with_steering(
     axs[0].grid()
     
     # Second subplot: Steering inputs
-    axs[1].plot(time_series, human_steering_inputs, label="Human Steering Input", color="orange")
-    axs[1].plot(time_series, controller_steering_inputs, label="Controller Steering Input", color="blue")
+    axs[1].plot(time_series, human_steering_inputs, label="User Control Input", color="orange")
+    axs[1].plot(time_series, controller_steering_inputs, label="MPC Control Input", color="blue")
     axs[1].set_xlabel("Time (s)")
-    axs[1].set_ylabel("Steering Input (dphi)")
-    axs[1].set_title("Steering Inputs Over Time")
+    axs[1].set_ylabel("Control Input (dphi)")
+    axs[1].set_title("Control Inputs Over Time")
     axs[1].legend()
     axs[1].grid()
     
