@@ -180,12 +180,10 @@ def plot_and_save_distances_with_steering(
     plt.subplots_adjust(hspace=0.4)
     
     # First subplot: Distances to lane boundaries
-    axs[0].plot(time_series, noisy_middle_scaled, label="Distance to Middle Lane", color="yellow")
-    axs[0].plot(time_series, noisy_right_scaled, label="Distance to Right Lane", color="grey")
+    axs[0].plot(time_series, noisy_middle_scaled, label="Distance to Middle Line", color="yellow")
+    axs[0].plot(time_series, noisy_right_scaled, label="Distance to Right Line", color="grey")
     axs[0].plot(time_series, np.full(len(time_series), config.LTA_TOLERANCE * config.PIXEL_TO_METER), 
                 label="LTA Threshold", color="red", linestyle="--")
-    axs[0].plot(time_series, np.full(len(time_series), optimal_distance * config.PIXEL_TO_METER), 
-                label="Optimal Distance", color="green", linestyle="--")
     axs[0].set_xlabel("Time (s)")
     axs[0].set_ylabel("Distance (m)")
     axs[0].set_title("Distances to Lane Boundaries Over Time")
