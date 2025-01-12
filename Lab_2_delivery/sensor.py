@@ -5,7 +5,7 @@ import pygame
 import window
 import config
 
-def get_car_bound_status(car_front_left, car_front_right, LTA_detections_left, LTA_detections_right, tolerance=config.LTA_TOLERANCE):
+def get_car_bound_status(car_front_left, car_front_right, LTA_left_threshold, LTA_right_threshold, tolerance=config.LTA_TOLERANCE):
     """
     Check whether the car is inside the road, near the LTA bounds, or outside them.
 
@@ -25,23 +25,23 @@ def get_car_bound_status(car_front_left, car_front_right, LTA_detections_left, L
             - "outside_right": Car is outside the right boundary.
     """
     # Find the closest left and right LTA points
-    closest_left_point = min(LTA_detections_left, key=lambda point: np.sqrt((car_front_left[0] - point[0])**2 + (car_front_left[1] - point[1])**2))
-    closest_right_point = min(LTA_detections_right, key=lambda point: np.sqrt((car_front_right[0] - point[0])**2 + (car_front_right[1] - point[1])**2))
+    closest_left_point = min(LTA_left_threshold, key=lambda point: np.sqrt((car_front_left[0] - point[0])**2 + (car_front_left[1] - point[1])**2))
+    closest_right_point = min(LTA_right_threshold, key=lambda point: np.sqrt((car_front_right[0] - point[0])**2 + (car_front_right[1] - point[1])**2))
 
-    # Check if car is outside left or right
-    if car_front_left[0] < closest_left_point[0]:
-        return "outside_left"
-    if car_front_right[0] > closest_right_point[0]:
-        return "outside_right"
+    # Check if car is on or crossing the LTA-threshold (red line)
+    if car_front_left[0] <= closest_left_point[0]:
+        return "crossing_LTA_threshold_left"
+    if car_front_right[0] >= closest_right_point[0]:
+        return "crossing_LTA_threshold_right"
 
-    # Check if car is near the left or right boundary
-    left_distance = window.calculate_closest_distance(car_front_left[0], car_front_left[1], LTA_detections_left)
-    right_distance = window.calculate_closest_distance(car_front_right[0], car_front_right[1], LTA_detections_right)
+    # Check if car is near the LTA-threshold (red line)
+    left_distance = window.calculate_closest_distance(car_front_left[0], car_front_left[1], LTA_left_threshold)
+    right_distance = window.calculate_closest_distance(car_front_right[0], car_front_right[1], LTA_right_threshold)
 
     if left_distance <= tolerance:
-        return "near_left"
+        return "near_LTA_threshold_left"
     if right_distance <= tolerance:
-        return "near_right"
+        return "near_LTA_threshold_right"
 
     # If none of the above, car is well inside
     return "inside"

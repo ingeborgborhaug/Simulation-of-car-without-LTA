@@ -49,13 +49,13 @@ def mpc_control(car_position_road, car_y_screen, theta, phi, dphi, LTA_left_dete
     # plot_ref_against_pred_positions(x_ref, x_pred, time)
     # -------------------------
 
-    if status in "outside_left":
+    if status in "crossing_LTA_threshold_left":
         dphi_control_initial_guess = np.ones(horizon) * (config.MAX_DPHI) 
-    elif status in "near_left":
+    elif status in "near_LTA_threshold_left":
         dphi_control_initial_guess = np.ones(horizon) * (config.MAX_DPHI/2)
-    elif status in "outside_right":
+    elif status in "crossing_LTA_threshold_right":
         dphi_control_initial_guess = np.ones(horizon) * (-config.MAX_DPHI)
-    elif status in "near_right":
+    elif status in "near_LTA_threshold_right":
         dphi_control_initial_guess = np.ones(horizon) * (-config.MAX_DPHI/2) 
         
         
