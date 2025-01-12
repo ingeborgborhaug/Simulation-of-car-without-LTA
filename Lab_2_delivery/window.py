@@ -6,7 +6,7 @@ import math
 import random
 
 
-def make_holes_in_roadline(points, nan_probability=config.NAN_PROBABILITY, chunk_size_range=(5, 30)):
+def make_holes_in_roadline(points, nan_probability=config.NAN_PROBABILITY, chunk_size_range=(5, 20)):
     """
     Replace random chunks of points with np.nan to simulate sensor dropouts.
 
@@ -84,7 +84,7 @@ def draw_road_holes(screen, road_data, left_line_holes_indexes, middle_line_hole
     # Draw the middle lane line (yellow, dashed), skipping segments with holes
     for i in range(0, len(road_data["middle"]) - 1, 2):  # Dashed pattern
         if i not in middle_line_holes_indexes and i + 1 not in middle_line_holes_indexes:
-            pygame.draw.line(screen, config.YELLOW, road_data["middle"][i], road_data["middle"][i + 1], 3)
+            pygame.draw.line(screen, config.WHITE, road_data["middle"][i], road_data["middle"][i + 1], 3)
 
 
 def straight_line_road(length, start_x, start_y, direction):
@@ -325,8 +325,8 @@ def draw_car(screen, car_position, theta):
         rotated_front_points.append((rotated_x, rotated_y))
 
     # Draw the back points with different colors
-    for point in rotated_front_points:
-        pygame.draw.circle(screen, config.GREEN, (int(point[0]), int(point[1])), 5)
+    # for point in rotated_front_points:
+    #     pygame.draw.circle(screen, config.YELLOW, (int(point[0]), int(point[1])), 5)
 
     # Return the back points in screen coordinates
     return rotated_front_points

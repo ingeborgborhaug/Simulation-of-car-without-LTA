@@ -7,7 +7,7 @@ def controller(keys, phi, recovering_flag, status):
     dphi_output = 0
     dphi_damped = 0
 
-    if keys[pygame.K_LEFT] and status not in ["crossing_LTA_threshold_left"]:
+    if keys[pygame.K_LEFT]and status not in ["crossing_LTA_threshold_left"]:
         dphi_human = -config.DELTA_DPHI
         dphi_output = dphi_human
 

@@ -77,7 +77,7 @@ while running:
     
     LTA_left_detection_noisy, LTA_right_detection_noisy = sensor.LTA_sensor(scrolled_road["middle"], scrolled_road["right"])
     LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes = sensor.LTA_processing(car_position_screen, LTA_left_detection_noisy, LTA_right_detection_noisy)
-    # sensor.draw_LTA_detections(config.SCREEN, LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes)
+    sensor.draw_LTA_detections(config.SCREEN, LTA_left_detection_processed, LTA_right_detection_processed, LTA_left_holes_indexes, LTA_right_holes_indexes)
     
     # LTA threshold
     LTA_left_threshold, LTA_right_threshold = sensor.generate_LTA_threshold(LTA_left_detection_processed, LTA_right_detection_processed)
@@ -123,10 +123,9 @@ while running:
     # text_dphi = config.FONT.render(f"dphi: {dphi:.2f}", True, config.WHITE)
     # config.SCREEN.blit(text_phi, (10, 10))           # Top-left corner
     # config.SCREEN.blit(text_dphi, (10, 50))          # Below x 
-    # config.SCREEN.blit(text_status, (10, 100))   
+    # config.SCREEN.blit(text_status, (10, 10))   
     # config.SCREEN.blit(text_optimal_steering, (10, 150))
     
-
     # -------------------------------------------------------------------
 
     window.draw_sensor_cone(config.SCREEN, car_position_screen, theta, fov_angle=120)
@@ -139,8 +138,31 @@ while running:
     plot_x = config.SCREEN.get_width() - steering_plot_surface.get_width() - 10  # 10px padding from the right
     plot_y = 10  # 10px padding from the top
     config.SCREEN.blit(steering_plot_surface, (plot_x, plot_y))
-    # ----------------------------------------------------------------------------------------------
-    
+    # ----------------- Light for LTA detection ------------------------t
+    base_x = plot_x # + steering_plot_surface.get_width() // 2
+    base_y = plot_y + steering_plot_surface.get_height() + 40
+    spacing = 60  # Vertical spacing between the lights
+
+    # Draw the three lights with labels "CAR RELATIVE LTA THRESHOLD"
+    text1 = config.FONT.render("LTA THRESHOLD STATUS", True, config.WHITE)
+    config.SCREEN.blit(text1, (base_x + 70, base_y - 10))
+
+    text2 = config.FONT.render("CROSSING LINE", True, config.WHITE)
+    config.SCREEN.blit(text2, (base_x + 120, base_y + spacing - 10))
+
+    text3 = config.FONT.render("NEAR LINE", True, config.WHITE)
+    config.SCREEN.blit(text3, (base_x + 120, base_y + 2 * spacing - 10))
+
+    text4 = config.FONT.render("WITHIN LIMITS", True, config.WHITE)
+    config.SCREEN.blit(text4, (base_x + 120, base_y + 3 * spacing - 10))
+
+    if status in ["crossing_LTA_threshold_left", "crossing_LTA_threshold_right"]:
+        pygame.draw.circle(config.SCREEN, config.WHITE, (base_x + 90, base_y + spacing), 15)  # PAST LINE
+    elif status in ["near_LTA_threshold_left", "near_LTA_threshold_right"]:
+        pygame.draw.circle(config.SCREEN, config.WHITE, (base_x + 90, base_y + 2* spacing), 15)  # APPROACHING LINE
+    else:
+        pygame.draw.circle(config.SCREEN, config.WHITE, (base_x + 90, base_y + 3 * spacing), 15)  # INSIDE LINE
+
     # Update display
     pygame.display.flip()
 

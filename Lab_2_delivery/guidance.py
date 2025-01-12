@@ -27,7 +27,7 @@ def mpc_control(car_position_road, car_y_screen, theta, phi, dphi, LTA_left_dete
     # Get recovery path
     recovery_trajectory, recovery_theta = navigation.recovery_trajectory_spline(car_position_road, car_y_screen,theta, phi, config.dt, config.T, config.V, optimal_theta, optimal_trajectory)
     x_ref = [x for x, y in recovery_trajectory]
-    navigation.plot_trajectory(recovery_trajectory, recovery_theta, config.RED)
+    navigation.plot_trajectory(recovery_trajectory, recovery_theta, config.GREEN)
 
     '''
     if recovering_flag and status in ["outside_left", "near_left"]:
@@ -58,9 +58,6 @@ def mpc_control(car_position_road, car_y_screen, theta, phi, dphi, LTA_left_dete
     elif status in "near_LTA_threshold_right":
         dphi_control_initial_guess = np.ones(horizon) * (-config.MAX_DPHI/2) 
         
-        
-    #TODO: Improove initial guess by inverting the last x-numbers of DPHI
-    # bounds = [(-np.radians(config.MAX_DPHI), np.radians(config.MAX_DPHI))] * horizon
 
     # Compare optimal and predicted path
     res = scipy.optimize.minimize(
@@ -68,22 +65,18 @@ def mpc_control(car_position_road, car_y_screen, theta, phi, dphi, LTA_left_dete
         dphi_control_initial_guess,                                     # Initial guess for the steering input sequence
         args=(x_pred, predicted_theta, x_ref, recovery_theta, horizon), # Additional arguments required by the cost function
         method="SLSQP",                                                 # Sequential Least Squares Programming
-        # bounds=bounds,
         options=dict(maxiter=100)
     )
 
     optimal_dphi_control = res.x[0] 
-    print('optimal_dphi_control', optimal_dphi_control)
-    text_optimal_steering = config.FONT.render(f"Phi from MPC: {optimal_dphi_control:.2f}", True, config.WHITE)        # Top-left corner
-    config.SCREEN.blit(text_optimal_steering, (10, 130))          # Below x
 
-    # if res.success:
-    #     print("Optimization succeeded!")
-    #     print("Optimized control inputs (phi_control):", res.x)
-    #     print("Final cost value:", res.fun)
-    # else:
-    #     print("Optimization failed.")
-    #     print("Reason:", res.message)
+    if res.success:
+        print("Optimization succeeded!")
+        print("Optimized control inputs (phi_control):", res.x)
+        print("Final cost value:", res.fun)
+    else:
+        print("Optimization failed.")
+        print("Reason:", res.message)
 
     if status in ["outside_left", "near_left"]:
         optimal_dphi_control = abs(optimal_dphi_control)

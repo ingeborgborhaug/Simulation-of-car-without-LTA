@@ -47,8 +47,6 @@ def get_optimal_trajectory(LTA_left_detection_processed, LTA_right_detection_pro
     
     return optimal_trajectory, optimal_theta #TODO: not dependent on time
 
-
-
 def recovery_trajectory_spline(position, car_y_screen, theta_start, phi_start, dt, T, V, optimal_thetas, optimal_trajectory, lookahead=200):
    
     length_of_trajectory = len(optimal_trajectory)

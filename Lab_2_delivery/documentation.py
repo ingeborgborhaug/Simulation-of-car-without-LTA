@@ -227,6 +227,8 @@ def render_steering_plot(time_series, human_steering_inputs, controller_steering
 
     # Create the figure (smaller size)
     fig, ax = plt.subplots(figsize=(2, 1.5))  # Smaller figure size for corner display
+
+    ax.set_ylim(-1, 1)
     
     # Plot steering inputs
     ax.plot(time_series, human_steering_inputs, label="Human", color="orange", linewidth=1)

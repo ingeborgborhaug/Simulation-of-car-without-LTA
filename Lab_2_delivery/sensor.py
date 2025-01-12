@@ -179,12 +179,12 @@ def draw_LTA_detections(screen, LTA_left_detection_processed, LTA_right_detectio
     # Draw LTA left line
     for i in range(len(LTA_left_detection_processed) - 1):
         # color = config.CYAN if i in LTA_left_holes_indexes else config.YELLOW
-        pygame.draw.line(screen, config.YELLOW, LTA_left_detection_processed[i], LTA_left_detection_processed[i + 1], 2)
+        pygame.draw.line(screen, config.CYAN, LTA_left_detection_processed[i], LTA_left_detection_processed[i + 1], 2)
 
     # Draw LTA right line
     for i in range(len(LTA_right_detection_processed) - 1):
         # color = config.CYAN if i in LTA_right_holes_indexes else config.WHITE
-        pygame.draw.line(screen, config.WHITE, LTA_right_detection_processed[i], LTA_right_detection_processed[i + 1], 2)
+        pygame.draw.line(screen, config.CYAN, LTA_right_detection_processed[i], LTA_right_detection_processed[i + 1], 2)
 
 def generate_LTA_threshold(LTA_left_detection_processed, LTA_right_detection_processed):
     # LTA THRESHOLD
